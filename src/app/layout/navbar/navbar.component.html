@@ -1,1 +1,52 @@
-<p>navbar works!</p>
+<nav class="navbar">
+  <div class="logo">Linked <span>Posts</span></div>
+  <ul class="nav-links">
+    @if (_LoginService.UserDataAfterDecoded() === null) {
+     <li (click)="closeNav()" routerLink="/login" class="pointer fw-bold"><a >Login</a></li>
+    }
+     @if (_LoginService.UserDataAfterDecoded() !== null) {
+      <li (click)="closeNav() ; togglePopup()" class="avatar pointer">
+      <img  [src]="user?.user?.photo" alt="Avatar" />
+     </li>
+      <li (click)="closeNav();logout()"  class="pointer fw-bold logout"><a >Logout</a></li>
+    }
+    
+  </ul>
+  <div class="menu-toggle" (click)="toggleMenu()">☰</div>
+</nav>
+<div class="profile-popup-container" *ngIf="showPopup">
+  <div class="profile-popup-overlay" (click)="closePopup()"></div>
+  
+  <div class="profile-popup-card" [@popupAnimation]>
+    <div class="popup-header">
+      <div class="user-avatar-wrapper">
+        <img [src]="user.user.photo" alt="User Photo" class="user-avatar" />
+        <div class="online-status"></div>
+      </div>
+      <h4 class="user-name">{{ user.user.name }}</h4>
+      <p class="user-title">Premium Member</p>
+    </div>
+    
+    <div class="popup-body">
+      <div class="user-detail">
+        <i class="icon icon-email"></i>
+        <span>{{ user.user.email }}</span>
+      </div>
+      <div class="user-detail">
+        <i class="icon icon-birthday"></i>
+        <span>{{ user.user.dateOfBirth | date }}</span>
+      </div>
+      <div class="user-detail">
+        <i class="icon icon-gender"></i>
+        <span>{{ user.user.gender }}</span>
+      </div>
+    </div>
+    
+    <div class="popup-footer">
+      <button class="popup-btn close-btn" (click)="closePopup()">
+        <i class="icon icon-close"></i> Close
+      </button>
+    </div>
+  </div>
+</div>
+
